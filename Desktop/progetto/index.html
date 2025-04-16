@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="it">
+  <!DOCTYPE html>
+<html lang
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trova il Luogo</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Georgia', serif;
+      background-color: #1e1b29;
+      color: white;
+      text-align: center;
+    }
+
+    .hero {
+  position: relative;
+  width: 100%;
+  height: 350px; /* o 300px per ancora più compattezza */
+  overflow: hidden;
+}
+
+.hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+    .hero-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      color: white;
+      text-shadow: 2px 2px 8px #000;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 20px 30px;
+      border-radius: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <img src="Trova-il-luogo/img/firenze.jpg" alt="Firenze al tramonto" />
+    <div class="hero-text">Trova il Luogo</div>
+  </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trova il Luogo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <div class="button-group">
+      <a href="https://www.paypal.com/paypalme/trovailluogo" target="_blank" class="paypal-button">
+        Sostienici con PayPal
+      </a>
+      <p class="donation-note">La donazione di 5€ serve solo a sostenere il progetto 🕯️</p>
+
+      <a href="mailto:trovailluogo@hotmail.com" class="contact-button">
+        Contattami
+      </a>
+    </div>
+
+    <div class="description">
+      <p>
+        Vuoi vivere un'avventura nel cuore di Firenze, tra luoghi pieni di storia, mistero e meraviglia? <br />
+        Impara, esplora, indovina. Unisciti alla caccia poetica tra statue e palazzi antichi, usando le tue doti da vero cercatore di luoghi!
+      </p>
+
+      <p>
+        Dopo la donazione, riceverai un Link tramite l'email che ci fornirai in fase di donazione con con un file audio e un testo narrato (puoi anche leggerlo se preferisci). <br />
+        Decifra l’indizio, scrivi il nome del luogo misterioso e... se hai indovinato, apparirà la sua immagine segreta e un aiuto per raggiungerlo! <br />
+        Dopo la visita, clicca per accedere alla tappa successiva... fino alla settima, dove ti attende una sorpresa finale!<br />
+      </p>
+
+    </p>
+    ​<br /> 
+    ​<br />
+
+   <!-- Sezione Recensioni -->
+<div id="recensioni" style="margin-top: 40px; padding: 20px; background-color: #aa00ff; border-radius: 12px;">
+  <h2>📝 Lascia una recensione</h2>
+  <input type="text" id="nomeRecensore" placeholder="Il tuo nome" style="display:block; margin-bottom:10px; padding:8px; width:100%; max-width:400px;" />
+  
+  <textarea id="testoRecensione" placeholder="Scrivi la tua esperienza..." rows="4" style="display:block; margin-bottom:10px; padding:8px; width:100%; max-width:400px;"></textarea>
+  
+  <label for="votoRecensione">Voto: </label>
+  <select id="votoRecensione" style="margin-bottom:10px;">
+    <option value="1">⭐</option>
+    <option value="2">⭐⭐</option>
+    <option value="3">⭐⭐⭐</option>
+    <option value="4">⭐⭐⭐⭐</option>
+    <option value="5" selected>⭐⭐⭐⭐⭐</option>
+  </select>
+
+  <button onclick="aggiungiRecensione()" style="padding: 10px 20px; background-color: #0004ff; color:rgb(133, 133, 133); border:none; border-radius:8px; cursor:pointer;">Invia recensione</button>
+
+  <div id="listaRecensioni" style="margin-top: 40px;">
+    <h3>📣 Recensioni degli utenti</h3>
+    <!-- Le recensioni appariranno qui -->
+  </div>
+</div>
+
+<script>
+  // Carica le recensioni salvate al caricamento della pagina
+  window.onload = function () {
+    const recensioniSalvate = JSON.parse(localStorage.getItem("recensioni")) || [];
+    recensioniSalvate.forEach(rec => mostraRecensione(rec.nome, rec.testo, rec.voto));
+  };
+
+  function aggiungiRecensione() {
+    const nome = document.getElementById("nomeRecensore").value.trim();
+    const testo = document.getElementById("testoRecensione").value.trim();
+    const voto = document.getElementById("votoRecensione").value;
+
+    if (nome === "" || testo === "") {
+      alert("Per favore compila tutti i campi.");
+      return;
+    }
+
+    const nuovaRecensione = { nome, testo, voto };
+
+    // Salva la recensione in LocalStorage
+    let recensioni = JSON.parse(localStorage.getItem("recensioni")) || [];
+    recensioni.push(nuovaRecensione);
+    localStorage.setItem("recensioni", JSON.stringify(recensioni));
+
+    mostraRecensione(nome, testo, voto);
+
+    // Pulisce i campi
+    document.getElementById("nomeRecensore").value = "";
+    document.getElementById("testoRecensione").value = "";
+    document.getElementById("votoRecensione").value = "5";
+  }
+
+  function mostraRecensione(nome, testo, voto) {
+    const recensioniDiv = document.getElementById("listaRecensioni");
+    const nuovaRecensioneDiv = document.createElement("div");
+    nuovaRecensioneDiv.style.marginTop = "15px";
+    nuovaRecensioneDiv.style.padding = "10px";
+    nuovaRecensioneDiv.style.borderBottom = "5px solid #ccc";
+
+    nuovaRecensioneDiv.innerHTML = `<strong>${nome}</strong> - ${"⭐".repeat(voto)}<br><p>${testo}</p>`;
+    recensioniDiv.appendChild(nuovaRecensioneDiv);
+  }
+</script>
+
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+
+    Ecco alcune informazioni che potrebbero esserti utili.<br />
+  </p>
+
+</p>
+    🏰 Duomo di Firenze (Cattedrale di Santa Maria del Fiore) Orari:<br />
+    
+    Cattedrale: lunedì–sabato 10:15–15:45; domenica chiuso<br />
+    
+    Cupola di Brunelleschi: lunedì–venerdì 8:15–19:30; sabato 8:15–17:15; domenica 12:45–17:15<br />
+    
+    Campanile di Giotto: tutti i giorni 8:15–19:45<br />
+    
+    Battistero di San Giovanni: tutti i giorni 8:30–19:30<br />
+    
+    Museo dell'Opera del Duomo: tutti i giorni 9:00–19:45<br />
+    
+    Prezzi:<br />
+    
+    Biglietto singolo per la Cattedrale (visita guidata): €17; ridotto €7<br />
+    
+    Biglietti cumulativi disponibili per più attrazioni<br />
+    
+    Indirizzo: Piazza del Duomo, 50122 Firenze<br />
+    
+    Come arrivare: Autobus linee 6, 11, 14, 23, C1, C2; Tramvia T1 fermata Alamanni​<br />
+    </p>
+    ​<br /> 
+    ​<br />
+ 
+  </p>
+  ⛪ Piazza Santa Croce e Basilica Orari:​<br />
+
+Lunedì–sabato: 9:30–17:30 (ultimo ingresso 17:00)​<br />
+
+Domeniche e festività: 12:30–17:45​<br />
+
+Prezzi:​<br />
+
+Biglietto intero: €8; ridotto: €6; gratuito per bambini sotto i 11 anni​<br />
+
+Indirizzo: Piazza Santa Croce, 16, 50122 Firenze​<br />
+
+Come arrivare: Autobus linee C1, C3​<br />
+</p>
+​<br /> 
+​<br />
+
+</p>
+🖼️ Galleria degli Uffizi Orari:​<br />
+
+Martedì–domenica: 8:15–18:30 (ultimo ingresso 17:30)​<br />
+
+Chiuso il lunedì, 1 gennaio e 25 dicembre​<br />
+
+Prezzi:​<br />
+
+Biglietto intero: €19; ridotto: €2 (per cittadini UE tra 18 e 25 anni); gratuito per minori di 18 anni​<br />
+
+Sconto "Prima Mattina": €19 per ingressi entro le 8:55​<br />
+
+Indirizzo: Piazzale degli Uffizi, 6, 50122 Firenze​<br />
+
+Come arrivare: Autobus linee C1, C3​​<br />
+</p>
+​<br />​
+​<br />
+
+</p>
+🏛️ Palazzo Vecchio Orari:​<br />
+
+Lunedì, martedì, mercoledì, venerdì, sabato, domenica: 9:00–19:00​<br />
+
+Giovedì: 9:00–14:00​<br />
+
+Torre di Arnolfo: stessi giorni, 9:00–17:00; giovedì 9:00–14:00​<br />
+
+Prezzi:​<br />
+
+Biglietto intero: €12,50; ridotto: €10; gratuito per minori di 18 anni​<br />
+
+Indirizzo: Piazza della Signoria, 50122 Firenze​<br />
+
+Come arrivare: Autobus linee C1, C2​<br />
+</p>
+​<br />
+​<br />
+
+</p>
+🏰 Palazzo Pitti Orari:​<br />
+
+Martedì–domenica: 8:15–18:30 (ultimo ingresso 17:30)​<br />
+
+Chiuso il lunedì, 1 gennaio e 25 dicembre​<br />
+
+Prezzi:​<br />
+
+Biglietto intero: €16; ridotto: €2; gratuito per minori di 18 anni​<br />
+
+Biglietto cumulativo Palazzo Pitti + Giardino di Boboli: €22​<br />
+
+Indirizzo: Piazza de' Pitti, 1, 50125 Firenze​<br />
+
+Come arrivare: Autobus linee C3, D​<br />
+</p>
+​<br />
+​<br />
+
+</p>
+🌳 Giardino di Boboli Orari:​<br />
+
+Aperto tutti i giorni dalle 8:15​<br />
+
+Chiusura variabile:​<br />
+
+Gennaio, febbraio, novembre, dicembre: 16:30​<br />
+
+Marzo e ottobre (ora solare): 17:30​<br />
+
+Marzo (ora legale), aprile, maggio, settembre, ottobre (ora legale): 18:30​<br />
+
+Giugno, luglio, agosto: 19:10​<br />
+
+Chiuso il primo e l'ultimo lunedì del mese, 25 dicembre​<br />
+
+Prezzi:​<br />
+
+Biglietto intero: €10; ridotto: €2; gratuito per minori di 18 anni​<br />
+
+Biglietto cumulativo Palazzo Pitti + Giardino di Boboli: €22​<br />
+
+Indirizzo: Piazza Pitti, 1, 50125 Firenze​<br />
+
+Come arrivare: Autobus linee C3, D​<br />
+</p>
+​<br />
+​<br />
+
+</p>
+⛪ Cappelle Medicee Orari:​<br />
+
+Lunedì, mercoledì, giovedì, venerdì, sabato, domenica: 8:15–18:50​<br />
+
+Chiuso il martedì e il 25 dicembre​<br />
+
+Prezzi:​<br />
+
+Biglietto intero: €9; ridotto: €2; gratuito per minori di 18 anni​<br />
+
+Costo prenotazione: €3​<br />
+</p>
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</body>
+</html>
